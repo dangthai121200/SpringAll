@@ -23,6 +23,7 @@ import axiosApi from "../../axios/axiosApi";
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
+ 
 
   const handleFirstPageButtonClick = (event) => {
     onPageChange(event, 0);
@@ -44,7 +45,7 @@ function TablePaginationActions(props) {
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
       <IconButton
         onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
+        disabled = {page === 0}
         aria-label="first page"
       >
         {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
@@ -64,7 +65,7 @@ function TablePaginationActions(props) {
 
       <IconButton
         onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        disabled={page === count - 1}
         aria-label="next page"
       >
         {theme.direction === "rtl" ? (
@@ -76,7 +77,7 @@ function TablePaginationActions(props) {
 
       <IconButton
         onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        disabled={page === count - 1}
         aria-label="last page"
       >
         {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
@@ -104,15 +105,8 @@ function TableStudent() {
 
   const [studentPagination, setStudentPagination] = React.useState(null);
 
-  // list student
-  const [students, setStudents] = React.useState([]);
-
-  const [rowsPerPage, setRowsPerPage] = React.useState(listSize[0]);
-
   React.useEffect(() => {
-    
     getListStudent(page, size);
-    console.log(studentPagination);
   }, []);
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -122,13 +116,13 @@ function TableStudent() {
   const handleChangePage = (event, newPage) => {
     if(newPage < totalPage){
       setPage(newPage);
-      getListStudent(page, size);
+      getListStudent(newPage, size);
     }
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+      setSize(event.target.value);
+      getListStudent(page, event.target.value);
   };
 
   async function getListStudent(page, size) {
@@ -137,13 +131,14 @@ function TableStudent() {
         page: page,
         size: size,
         sort: {
-          direction: "DESC",
+          direction: "ASC",
           properties: ["lastName"],
         },
       })
       .then(function (response) {
         setStudentPagination(response.data);
         setTotalPage(response.data.totalPages);
+        console.log(response.data);
       });
   }
 
@@ -178,9 +173,9 @@ function TableStudent() {
               rowsPerPageOptions={listSize}
               colSpan={3}
               count={
-                studentPagination == null ? 0 : studentPagination.content.length
+                studentPagination == null ? 0 : studentPagination.totalPages
               }
-              rowsPerPage={rowsPerPage}
+              rowsPerPage={size}
               page={page}
               SelectProps={{
                 inputProps: {
@@ -191,6 +186,7 @@ function TableStudent() {
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
               ActionsComponent={TablePaginationActions}
+              labelDisplayedRows = {function() {return `1–${size} of ${totalPage !== -1 ? totalPage : `more than ${size}`}`; }}
             />
           </TableRow>
         </TableFooter>
