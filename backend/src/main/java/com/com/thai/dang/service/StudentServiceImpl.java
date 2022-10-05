@@ -5,6 +5,7 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import com.com.thai.dang.domain.page.StudentPageRequest;
@@ -23,9 +24,10 @@ public class StudentServiceImpl implements StudentService {
 	private StudentRepository studentRepository;
 
 	@Override
-	public Page<Student> getAllStudent(StudentPageRequest studentPageRequest) {
-		Page<Student> page = studentRepository.findAll(studentPageRequest);
-		return page;
+	public Page<StudentDomain> getAllStudent(StudentPageRequest studentPageRequest) {
+		Page<Student> pageStudent = studentRepository.findAll(studentPageRequest);
+		Page<StudentDomain> StudentDomain = new PageImpl(pageStudent.toList(), studentPageRequest, pageStudent.getTotalElements());
+		return StudentDomain;
 	}
 
 	@Override
@@ -48,6 +50,13 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public StudentDomain ConvertToStudentDomain(Student student) {
 		StudentDomain studentDomain = modelMapper.map(student, StudentDomain.class);
+		return studentDomain;
+	}
+
+	@Override
+	public StudentDomain getStudentById(int id) {
+		Student student = studentRepository.getById(id);
+		StudentDomain studentDomain = ConvertToStudentDomain(student);
 		return studentDomain;
 	}
 

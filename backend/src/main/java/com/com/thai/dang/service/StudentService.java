@@ -9,9 +9,11 @@ import com.com.thai.dang.entity.Student;
 
 public interface StudentService {
 
-	public Page<Student> getAllStudent(StudentPageRequest studentPageRequest);
+	public Page<StudentDomain> getAllStudent(StudentPageRequest studentPageRequest);
 
 	public void addStudent(StudentDomainAdd studentDomainAdd);
+	
+	public StudentDomain getStudentById(int id);
 
 	public void deleteAllStudent();
 
