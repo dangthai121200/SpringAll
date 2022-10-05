@@ -1,10 +1,10 @@
-import logo from './logo.svg';
-import TableStudent from './compoments/TableStudent/TableStudent';
+import React from "react";
+import StudentTable from "./compoments/StudentTable/StudentTable"
+
 function App() {
   return (
     <div className="App">
-     
-      <TableStudent/>
+      <StudentTable />
     </div>
   );
 }
