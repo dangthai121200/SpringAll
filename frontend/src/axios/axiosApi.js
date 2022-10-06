@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import { BASE_URL } from '../constant/Api';
 
 export default axios.create ({
-    baseURL: 'http://localhost:8080/',
+    baseURL: BASE_URL,
     timeout: 1000
 });
