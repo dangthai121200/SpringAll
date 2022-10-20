@@ -1,15 +1,10 @@
 package com.com.thai.dang.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
-import com.com.thai.dang.domain.page.StudentPage;
 import com.com.thai.dang.domain.page.StudentPageRequest;
 import com.com.thai.dang.domain.student.StudentDomain;
 import com.com.thai.dang.domain.student.StudentDomainAdd;
@@ -26,10 +21,9 @@ public class StudentServiceImpl implements StudentService {
 	private StudentRepository studentRepository;
 
 	@Override
-	public StudentPage<StudentDomain> getAllStudent(StudentPageRequest studentPageRequest) {
+	public Page<Student> getAllStudent(StudentPageRequest studentPageRequest) {
 		Page<Student> pageStudent = studentRepository.findAll(studentPageRequest);
-		StudentPage<StudentDomain> studentDomain = ConvertToStudentPageDomain(pageStudent);
-		return studentDomain;
+		return pageStudent;
 	}
 
 	@Override
@@ -37,7 +31,7 @@ public class StudentServiceImpl implements StudentService {
 		Student student = ConvertToStudentEntity(studentDomainAdd);
 		studentRepository.save(student);
 	}
-	
+
 	@Override
 	public void deleteAllStudent() {
 		studentRepository.deleteAll();
@@ -61,15 +55,4 @@ public class StudentServiceImpl implements StudentService {
 		StudentDomain studentDomain = ConvertToStudentDomain(student);
 		return studentDomain;
 	}
-
-	@Override
-	public StudentPage<StudentDomain> ConvertToStudentPageDomain(Page<Student> pageStudent) {
-		List<StudentDomain> studentDomains = new ArrayList<>();
-		modelMapper.map(pageStudent.getContent(), studentDomains);
-		StudentPage<StudentDomain> studentPageDomain = new StudentPage<StudentDomain>(studentDomains, pageStudent.getPageable(), pageStudent.getTotalPages())
-		return studentPageDomain;
-	}
-
-	
-
 }

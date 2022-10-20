@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import Typography from "@mui/material/Typography";
 
@@ -7,7 +7,7 @@ import axiosApi from "../../axios/axiosApi";
 import { STUDENT } from "../../constant/Api";
 
 const columns = [
-  { field: "id", headerName: "ID", width: 70 },
+  { field: "pkIdStudent", headerName: "ID", width: 70 },
   { field: "firstName", headerName: "First name", width: 130 },
   { field: "lastName", headerName: "Last name", width: 130 },
   {
@@ -20,36 +20,66 @@ const columns = [
       `${params.row.firstName || ""} ${params.row.lastName || ""}`,
   },
 ];
-
-const rows = null;
-const rowsPerPageOptions = [5, 10, 15];
-const rowsPerPage = 5;
+const rowsPerPageOptions = [1, 2, 3, 4];
 
 function StudentTable() {
+
+  const [data, setData] = useState(null);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+
   useEffect(() => {
-    axiosApi.post(STUDENT.GET_ALL_STUDENT, {
-      page: "1",
-      size: "3",
+    getAllStudent(page, rowsPerPage);
+  }, []);
+
+  const getAllStudent = async (page, rowsPerPage) => {
+    // console.log(page)
+    // console.log(rowsPerPage)
+    await axiosApi.post(STUDENT.GET_ALL_STUDENT, {
+      // backend min page is 0 so we need decrease 1
+      page: page - 1,
+      size: rowsPerPage,
       sort: {
         direction: "ASC",
         properties: ["lastName"],
       },
-    });
-  }, []);
+    }).then(response => {
+      setData(response.data);
+    })
+  }
 
-  return (
-    <div className="App">
-      <Typography align="center" variant="h3">
-        List Of Students
-      </Typography>
-      <DataTable
-        columns={columns}
-        rows={rows}
-        rowsPerPageOptions={rowsPerPageOptions}
-        rowsPerPage={rowsPerPage}
-      />
-    </div>
-  );
+  const onRowsPerPageChange = (event)  => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    console.log(event.target.value)
+    console.log(rowsPerPage)
+    setPage(1);
+    getAllStudent(page, rowsPerPage);
+  }
+
+  const onPageChange = (event, newPage) => {
+
+  }
+
+  if (data != null) {
+    return (
+      <div className="App">
+        <Typography align="center" variant="h3">
+          List Of Students
+        </Typography>
+        <DataTable
+          columns={columns}
+          data={data}
+          rowsPerPage={rowsPerPage}
+          rowsPerPageOptions={rowsPerPageOptions}
+          onPageChange={onPageChange}
+          onRowsPerPageChange={onRowsPerPageChange}
+        />
+      </div>
+    );
+  } else {
+    return <div>loading....!</div>
+  }
+
 }
 
 export default StudentTable;

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.com.thai.dang.domain.page.StudentPage;
 import com.com.thai.dang.domain.page.StudentPageRequest;
 import com.com.thai.dang.domain.student.StudentDomain;
 import com.com.thai.dang.entity.Student;
@@ -23,10 +22,10 @@ public class StudentController {
 	private StudentService studentService;
 
 	@PostMapping
-	public StudentPage<StudentDomain> getAllStudent(@RequestBody StudentPageRequest studentPageRequest) {
-		return  studentService.getAllStudent(studentPageRequest);
+	public Page<Student> getAllStudent(@RequestBody StudentPageRequest studentPageRequest) {
+		return studentService.getAllStudent(studentPageRequest);
 	}
-	
+
 	@GetMapping
 	public StudentDomain getStudentById(@RequestParam(name = "idStudent", required = true) int idStudent) {
 		return studentService.getStudentById(idStudent);

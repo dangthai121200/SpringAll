@@ -24,5 +24,6 @@ public class SpringAllApplication implements CommandLineRunner {
 		studentService.addStudent(new StudentDomainAdd("Thai", "Bao"));
 		studentService.addStudent(new StudentDomainAdd("Thai1", "Bao1"));
 		studentService.addStudent(new StudentDomainAdd("Thai2", "Bao2"));
+		studentService.addStudent(new StudentDomainAdd("Thai3", "Bao3"));
 	}
 }

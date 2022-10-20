@@ -1,17 +1,18 @@
 import React from "react";
 import TablePagination from "@mui/material/TablePagination";
 
-function TablePaginationCustom(props) {
+function TablePaginationCustom({ totalPages, pageNumber, rowsPerPageOptions, rowsPerPage, onPageChange, onRowsPerPageChange }) {
   return (
     <TablePagination
-      {...props}
-      rowsPerPageOptions={props.rowsPerPageOptions}
-      rowsPerPage={props.rowsPerPage}
+
       component="div"
-      count={props.count}
-      page={props.page}
-      // onPageChange={handleChangePage}
-      // onRowsPerPageChange={handleChangeRowsPerPage}
+      count={totalPages}
+      page={pageNumber}
+      rowsPerPageOptions={rowsPerPageOptions}
+      rowsPerPage={rowsPerPage}
+      onPageChange={onPageChange}
+      onRowsPerPageChange={onRowsPerPageChange}
+      labelDisplayedRows={({ from, to, count }) => /* backend min page is 0 so we need increase 1 */ `Page ${pageNumber + 1} of total ${count} pages`}
     />
   );
 }

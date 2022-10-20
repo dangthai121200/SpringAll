@@ -1,35 +1,39 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 
 import { DataGrid } from "@mui/x-data-grid";
 import TablePaginationCustom from "../TablePaginationCustom/TablePaginationCustom";
 
 function DataTable({
   columns,
-  rows,
-  rowsPerPageOptions,
+  data,
   rowsPerPage,
-  count,
-  page,
-  actions,
+  rowsPerPageOptions,
+  onPageChange,
+  onRowsPerPageChange
 }) {
+
+  const [rows, setRows] = useState(data.content);
+  const [totalPages, setTotalPages] = useState(data.totalPages);
+  const [pageNumber, setPageNumber] = useState(data.pageable.pageNumber)
+  const [pageSize, setPageSize] = useState(data.pageable.pageSize)
+
   return (
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
-        loading={rows != null ? false : true}
-        rows={rows != null ? rows : 0}
+        loading={data != null ? false : true}
+        rows={rows != null ? rows : null}
         columns={columns}
         checkboxSelection
+        getRowId={(row) => row.pkIdStudent}
         components={{
           Pagination: (props) => (
             <TablePaginationCustom
-              {...props}
-              rowsPerPageOptions={rowsPerPageOptions}
+              totalPages={totalPages}
+              pageNumber={pageNumber}
               rowsPerPage={rowsPerPage}
-              component="div"
-              count={count}
-              page={page}
-              // onPageChange={handleChangePage}
-              // onRowsPerPageChange={handleChangeRowsPerPage}
+              rowsPerPageOptions={rowsPerPageOptions}
+              onPageChange={onPageChange}
+              onRowsPerPageChange={onRowsPerPageChange}
             />
           ),
         }}
