@@ -2,13 +2,17 @@ package com.com.thai.dang.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.com.thai.dang.event.StudentEvent;
+
 @Entity
 @Table(name = "student")
+@EntityListeners(StudentEvent.class)
 public class Student {
 
 	@Id
