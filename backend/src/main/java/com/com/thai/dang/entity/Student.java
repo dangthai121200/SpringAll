@@ -26,6 +26,9 @@ public class Student {
 	@Column(name = "LAST_NAME")
 	private String lastName;
 
+	@Column(name = "FULL_NAME")
+	private String fullName;
+
 	public Student() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -53,6 +56,14 @@ public class Student {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 }
