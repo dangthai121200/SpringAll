@@ -7,5 +7,5 @@ import com.com.thai.dang.entity.Student;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Integer> {
-	
+	Student findByusername(String username);
 }

@@ -21,4 +21,6 @@ public interface StudentService {
 
 	public StudentDomain ConvertToStudentDomain(Student student);
 
+	public Student findStudentByUserName(String username);
+
 }

@@ -1,16 +1,16 @@
 package com.com.thai.dang.event;
 
-import javax.persistence.PostLoad;
-import javax.persistence.PostPersist;
-import javax.persistence.PostRemove;
-import javax.persistence.PrePersist;
-import javax.persistence.PreRemove;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.com.thai.dang.entity.EntityEvent;
 import com.com.thai.dang.entity.Student;
+
+import jakarta.persistence.PostLoad;
+import jakarta.persistence.PostPersist;
+import jakarta.persistence.PostRemove;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreRemove;
 
 public class StudentEvent implements EntityEvent<Student> {
 

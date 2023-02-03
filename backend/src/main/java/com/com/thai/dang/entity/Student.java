@@ -1,14 +1,14 @@
 package com.com.thai.dang.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import com.com.thai.dang.event.StudentEvent;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "student")
@@ -19,6 +19,12 @@ public class Student {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "PK_ID_STUDENT")
 	private int pkIdStudent;
+
+	@Column(name = "USER_NAME", unique = true, nullable = false)
+	private String username;
+
+	@Column(name = "PASSWORD", nullable = false)
+	private String password;
 
 	@Column(name = "FIRST_NAME")
 	private String firstName;
@@ -64,6 +70,22 @@ public class Student {
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

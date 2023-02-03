@@ -1,18 +1,24 @@
 package com.com.thai.dang.service;
 
+import java.util.ArrayList;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.com.thai.dang.domain.page.StudentPageRequest;
 import com.com.thai.dang.domain.student.StudentDomain;
 import com.com.thai.dang.domain.student.StudentDomainAdd;
+import com.com.thai.dang.domain.student.UserDetailStudent;
 import com.com.thai.dang.entity.Student;
 import com.com.thai.dang.repository.StudentRepository;
 
 @Service
-public class StudentServiceImpl implements StudentService {
+public class StudentServiceImpl implements StudentService, UserDetailsService {
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -54,5 +60,24 @@ public class StudentServiceImpl implements StudentService {
 		Student student = studentRepository.getById(id);
 		StudentDomain studentDomain = ConvertToStudentDomain(student);
 		return studentDomain;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Student student = findStudentByUserName(username);
+		UserDetailStudent userDetailStudent = null;
+		if (student != null) {
+			userDetailStudent = new UserDetailStudent();
+			userDetailStudent.setUsername(username);
+			userDetailStudent.setPassword(student.getPassword());
+			userDetailStudent.setAuthorities(new ArrayList<>());
+		}
+
+		return userDetailStudent;
+	}
+
+	@Override
+	public Student findStudentByUserName(String username) {
+		return studentRepository.findByusername(username);
 	}
 }
